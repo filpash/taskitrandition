@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Admin, Resource, Login } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+import { UserList } from './components/users';
+import Dashboard from './components/Dashboard';
+import authProvider from './components/authProvider';
+import { createMuiTheme } from '@material-ui/core/styles';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+const MyLoginPage = () => (
+    <Login
+        // A random image that changes everyday
+        backgroundImage="https://source.unsplash.com/random/1600x900/daily"
+    />
+);
+
+const theme = createMuiTheme({
+    palette: {
+        type: 'dark', // Switching the dark mode on is a single property value change.
+    },
+});
+
+
+const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
+
+const App = () => (
+    <Admin loginPage={MyLoginPage}
+           theme={theme}
+           dashboard={Dashboard}
+           authProvider={authProvider}
+           dataProvider={dataProvider}>
+        <Resource name="users" list={UserList} />
+    </Admin>
+);
 
 export default App;
